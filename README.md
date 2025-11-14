@@ -117,7 +117,20 @@ EXAMPLE OUTPUTS:
 
 ### Delete database entry
 
-TODO
+> DELETE `/db/<id>`
+
+Given an ID corresponding to an existing database entry, deletes the entry and returns 204.
+
+EXAMPLE CALLS:
+
+```py
+requests.delete("http://localhost:4820/db/79388c82-87e6-4528-accf-0bda421d71d9")
+...
+```
+
+EXAMPLE OUTPUTS:
+
+No data with 204 return code
 
 ## Installation
 

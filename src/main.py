@@ -50,6 +50,22 @@ def write_database():
     return asdict(entry)
 
 
+@app.route("/db/<uuid:id>", methods=["PUT"])
+def update_database(id: uuid.UUID):
+    entry = DbEntry(id, db.get(str(id)))
+    if entry.data is None:
+        return "Database entry does not exist\n", 404
+
+    data = request.get_json(silent=True)
+    if data is None:
+        return "Invalid type of data\n", 400
+
+    entry.data = data
+    db[entry.id] = entry.data
+
+    return asdict(entry)
+
+
 def main():
     # Load DB from memory
     pass

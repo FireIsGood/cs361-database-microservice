@@ -177,7 +177,7 @@ def main():
     autosave_thread.start()
 
     # Runs Flask app
-    app.run(host="localhost", port=4820, debug=True)
+    app.run(host="localhost", port=4820)
 
 
 if __name__ == "__main__":

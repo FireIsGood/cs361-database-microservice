@@ -148,8 +148,6 @@ def main():
     autosave_thread = threading.Thread(target=autosave_loop, args=(60,), daemon=True)
     autosave_thread.start()
 
-    pass
-
     # Runs Flask app
     app.run(host="localhost", port=4820, debug=True)
 

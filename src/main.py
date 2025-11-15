@@ -58,8 +58,8 @@ def save_db_to_disk() -> None:
     """
     Saves the current in-memory db to database/db.json.
 
-    If db.json already exists, 
-    rename it to database/db_backup_<UNIX_TIMESTAMP>.json first, 
+    If db.json already exists,
+    rename it to database/db_backup_<UNIX_TIMESTAMP>.json first,
     then write the new db.json.
     """
     DB_DIR.mkdir(exist_ok=True)
@@ -145,9 +145,7 @@ def main():
     load_db_from_disk()
 
     # Starts background autosave every 60 seconds
-    autosave_thread = threading.Thread(
-        target=autosave_loop, args=(60,), daemon=True
-    )
+    autosave_thread = threading.Thread(target=autosave_loop, args=(60,), daemon=True)
     autosave_thread.start()
 
     pass

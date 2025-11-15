@@ -6,6 +6,13 @@ import json
 import threading
 import time
 import uuid
+import logging
+
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+)
 
 
 @dataclass
@@ -38,20 +45,33 @@ def load_db_from_disk() -> None:
     """
     global db
     DB_DIR.mkdir(exist_ok=True)
-    if DB_FILE.exists():
-        try:
-            with DB_FILE.open("r", encoding="utf-8") as f:
-                data = json.load(f)
-            # Expects {id: value, ...}
-            if isinstance(data, dict):
-                db = data
-            else:
-                db = {}
-        except Exception:
-            # On any error, starts fresh rather than crashing
-            db = {}
+
+    # Guard clause: if file doesn't exist, then starts empty and returns
+    if not DB_FILE.exists():
+        db = {}
+        logging.info("No existing db.json found; starting with empty database.")
+        return
+
+    try:
+        with DB_FILE.open("r", encoding="utf-8") as f:
+            data = json.load(f)
+    except Exception as e:
+        # On any error, starts fresh rather than crashing
+        db = {}
+        logging.warning(
+            "Failed to load db.json (%s); starting with empty database.", e
+        )
+        return
+
+    # Expects {id: value, ...}
+    if isinstance(data, dict):
+        db = data
+        logging.info("Loaded database from disk with %d entries.", len(db))
     else:
         db = {}
+        logging.warning(
+            "db.json did not contain a JSON object; starting with empty database."
+        )
 
 
 def save_db_to_disk() -> None:
@@ -73,12 +93,20 @@ def save_db_to_disk() -> None:
     with DB_FILE.open("w", encoding="utf-8") as f:
         json.dump(snapshot, f, ensure_ascii=False, indent=2)
 
+    logging.info("Saved database to db.json with %d entries.", len(snapshot))
+
 
 def autosave_loop(interval_seconds: int = 60) -> None:
     """Background loop that periodically saves the db to disk."""
     while True:
         time.sleep(interval_seconds)
-        save_db_to_disk()
+        try:
+            save_db_to_disk()
+            logging.info(
+                "Autosave complete; current database size: %d entries.", len(db)
+            )
+        except Exception as e:
+            logging.error("Error during autosave: %s", e)
 
 
 # ***Flask app and routes***

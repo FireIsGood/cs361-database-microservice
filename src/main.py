@@ -7,6 +7,7 @@ import threading
 import time
 import uuid
 import logging
+import atexit
 
 
 logging.basicConfig(
@@ -109,6 +110,14 @@ def autosave_loop(interval_seconds: int = 60) -> None:
             logging.error("Error during autosave: %s", e)
 
 
+def graceful_shutdown():
+    """Run any last tasks before shutting down"""
+    logging.info("Exiting gracefully")
+
+    # Save database to disk
+    save_db_to_disk()
+
+
 # ***Flask app and routes***
 app = Flask(__name__)
 
@@ -175,6 +184,9 @@ def main():
     # Starts background autosave every 60 seconds
     autosave_thread = threading.Thread(target=autosave_loop, args=(60,), daemon=True)
     autosave_thread.start()
+
+    # Register graceful shutdown function
+    atexit.register(graceful_shutdown)
 
     # Runs Flask app
     app.run(host="localhost", port=4820)

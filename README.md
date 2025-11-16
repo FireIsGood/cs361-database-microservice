@@ -184,3 +184,22 @@ Run the program:
 python3 src/main.py
 
 ```
+
+## UML Diagram of routes
+### GET /db – read full database
+<img width="681" height="452" alt="image" src="https://github.com/user-attachments/assets/d04e8ebe-f5e9-431a-ba2f-27fe85961d41" />
+
+### GET /db/{id} – read single entry
+<img width="704" height="541" alt="image" src="https://github.com/user-attachments/assets/f17f2ba7-b1dd-4804-b3ef-f233f707812f" />
+
+### POST /db – create new entry
+<img width="687" height="606" alt="image" src="https://github.com/user-attachments/assets/04167a55-f4ef-4865-b3d4-3ea18c760878" />
+
+### PUT /db/{uuid} – update existing entry
+<img width="709" height="511" alt="image" src="https://github.com/user-attachments/assets/ed36e431-84cf-4c23-8231-05dc7cbb99ce" />
+
+### DELETE /db/{id} – delete entry
+<img width="716" height="554" alt="image" src="https://github.com/user-attachments/assets/2d14a376-ae63-428f-939a-b94419851bf5" />
+
+
+

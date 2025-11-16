@@ -1,5 +1,6 @@
 # Python venv
 env/
+env-tests/
 
 # Ignore DB JSON files
 database/*.json

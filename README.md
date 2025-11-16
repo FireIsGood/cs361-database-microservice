@@ -187,7 +187,14 @@ python3 src/main.py
 
 ## UML Diagram of routes
 ### GET /db – read full database
-<img width="681" height="452" alt="image" src="https://github.com/user-attachments/assets/d04e8ebe-f5e9-431a-ba2f-27fe85961d41" />
+sequenceDiagram
+    participant Client
+    participant Server
+
+    Client->>+Server: GET /db
+    Server->>Server: read_database_full()
+    Server-->>Client: 200 OK\n{ ...full database... }
+    deactivate Server
 
 ### GET /db/{id} – read single entry
 <img width="704" height="541" alt="image" src="https://github.com/user-attachments/assets/f17f2ba7-b1dd-4804-b3ef-f233f707812f" />

@@ -1,5 +1,6 @@
 from typing import Any
 from flask import Flask, request
+from flask_cors import CORS 
 from dataclasses import asdict, dataclass
 from pathlib import Path
 import json
@@ -120,7 +121,7 @@ def graceful_shutdown():
 
 # ***Flask app and routes***
 app = Flask(__name__)
-
+CORS(app, resources={r"/db*": {"origins": "http://localhost:5173"}})
 
 @app.route("/db")
 def read_database_full():
